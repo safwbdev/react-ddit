@@ -12,21 +12,20 @@ class AllTopics extends Component {
             currentPage: 1,
             topicsPerPage: 20
         }
-        this.handleClick = this.handleClick.bind(this);
     }
-
-    handleClick(event) {
+    handleClick = (e) => {
         this.setState({
-          currentPage: Number(event.target.id)
-        });
-      }
+            currentPage: Number(e.target.id)
+          });
+
+    }
 
     render() {
         const topicCount = this.props.topics.length;
         
-        // sort topics
+        // sort topics by votes
         let topicArray = this.props.topics.sort(function(a, b) {
-            return parseFloat(b.id) - parseFloat(a.id);
+            return parseFloat(b.votes) - parseFloat(a.votes);
         });
         
         // code for pagination
