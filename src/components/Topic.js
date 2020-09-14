@@ -1,86 +1,103 @@
-import React, { Component } from 'react';
-import {connect} from 'react-redux';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import KeyboardArrowUp from '@material-ui/icons/KeyboardArrowUp';
-import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
+import Button from "@material-ui/core/Button";
+import KeyboardArrowUp from "@material-ui/icons/KeyboardArrowUp";
+import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
 
 class Topic extends Component {
-
   checkBody = (e) => {
     var urlRegex = /(https?:\/\/[^\s]+)/g;
-    return e.replace(urlRegex, function(url) {
-        const newBody = '<a href="' + url + '" target="_blank">' + url + '</a>';
-        return newBody;
-    })
-  }
+    return e.replace(urlRegex, function (url) {
+      const newBody = '<a href="' + url + '" target="_blank">' + url + "</a>";
+      return newBody;
+    });
+  };
+  handleEdit = (id) => {
+    this.props.editTopic(id);
+  };
+  handleSave = (id) => {
+    this.props.saveTopic(id);
+  };
+  handleDelete = (id) => {
+    this.props.deleteTopic(id);
+  };
+  handleUpvote = (id) => {
+    this.props.upvote(id);
+  };
+  handleDownvote = (id) => {
+    this.props.downvote(id);
+  };
   render() {
+    const { id, votes, title, body, saved } = this.props.topic;
     return (
-      <Paper> 
-        <Grid 
-          container 
-          className="topic">
-          <Grid 
-            item 
-            xs={1} 
-            className="votes-content" >
-            <Button 
-              variant="contained" 
-              onClick={()=>this.props.dispatch({type:'UPVOTE',id:this.props.topic.id})}>
+      <Paper>
+        <Grid container className="topic">
+          <Grid item xs={1} className="votes-content">
+            <Button variant="contained" onClick={() => this.handleUpvote(id)}>
               <KeyboardArrowUp />
             </Button>
-            <p>{this.props.topic.votes}</p>
-            <Button 
-              variant="contained" 
-              onClick={()=>this.props.dispatch({type:'DOWNVOTE',id:this.props.topic.id})}>
-                <KeyboardArrowDown />
-              </Button>
+            <p>{votes}</p>
+            <Button variant="contained" onClick={() => this.handleDownvote(id)}>
+              <KeyboardArrowDown />
+            </Button>
           </Grid>
-          <Grid 
-            item 
-            xs={11} 
-            className="topic-content">
-            <h3>{this.props.topic.title}</h3>
-            <p dangerouslySetInnerHTML={{ __html: this.checkBody(this.props.topic.body) }} />
+          <Grid item xs={11} className="topic-content">
+            <h3>{title}</h3>
+            <p
+              dangerouslySetInnerHTML={{
+                __html: this.checkBody(body),
+              }}
+            />
           </Grid>
-          <Grid 
-            item 
-            xs={12} 
-            className="action-buttons">
-            <Button 
-              variant="contained" 
+          <Grid item xs={12} className="action-buttons">
+            <Button
+              variant="contained"
               size="small"
-              onClick={
-                ()=>this.props.dispatch({
-                  type:'EDIT_TOPIC',
-                  id:this.props.topic.id
-                })
-              }>Edit</Button>
-            <Button 
-              variant="contained" 
+              onClick={() => this.handleEdit(id)}
+            >
+              Edit
+            </Button>
+            <Button
+              variant="contained"
               size="small"
-              onClick={
-                ()=>this.props.dispatch({
-                  type:'DELETE_TOPIC',
-                  id:this.props.topic.id
-                })
-              }>Delete</Button>
-            <Button 
-              variant="contained" 
+              onClick={() => this.handleDelete(id)}
+            >
+              Delete
+            </Button>
+            <Button
+              variant="contained"
               size="small"
-              onClick={
-                ()=>this.props.dispatch({
-                  type:'SAVE_TOPIC',
-                  id:this.props.topic.id
-                })
-              }>
-              {this.props.topic.saved ? "Saved" : "Save"}
-              </Button>
+              onClick={() => this.handleSave(id)}
+            >
+              {saved ? "Saved" : "Save"}
+            </Button>
           </Grid>
         </Grid>
       </Paper>
-  );
- }
+    );
+  }
 }
-export default connect()(Topic);
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteTopic: (id) => {
+      dispatch({ type: "DELETE_TOPIC", id: id });
+    },
+    saveTopic: (id) => {
+      dispatch({ type: "SAVE_TOPIC", id: id });
+    },
+    editTopic: (id) => {
+      dispatch({ type: "EDIT_TOPIC", id: id });
+    },
+    upvote: (id) => {
+      dispatch({ type: "UPVOTE", id: id });
+    },
+    downvote: (id) => {
+      dispatch({ type: "DOWNVOTE", id: id });
+    },
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Topic);
