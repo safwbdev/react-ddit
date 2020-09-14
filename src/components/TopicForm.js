@@ -1,14 +1,30 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
+import {
+  Grid,
+  Button,
+  TextField,
+  Typography,
+  Container,
+} from "@material-ui/core/";
 import moment from "moment";
 
 class TopicForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: "",
+      body: "",
+    };
+  }
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
   handleSubmit = (e) => {
     e.preventDefault();
-    const title = this.getTitle.value;
-    const body = this.getBody.value;
+    const { title, body } = this.state;
     const data = {
       id: new moment(new Date()).format("YYYYMMDDhmmss"),
       title,
@@ -19,45 +35,54 @@ class TopicForm extends Component {
     };
     this.props.addTopic(data);
 
-    this.getTitle.value = "";
-    this.getBody.value = "";
+    this.setState({
+      title: "",
+      body: "",
+    });
     this.props.history.push("/");
   };
   render() {
     return (
-      <div>
-        <h1>Create Topic</h1>
-        {moment(new Date()).format("YYYYMMDDhmmss")}
-        <Grid container>
-          <Grid item xs={12} className="create-topic">
-            <form onSubmit={this.handleSubmit}>
-              <input
+      <Container maxWidth="lg">
+        <Grid container spacing={3}>
+          <Grid item xs={12}>
+            <Typography variant="h4">Create Topic</Typography>
+          </Grid>
+        </Grid>
+        <form onSubmit={this.handleSubmit}>
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
                 required
-                type="text"
-                ref={(input) => (this.getTitle = input)}
-                className="title-edit"
-                placeholder="Enter Topic Title"
+                value={this.state.title}
+                onChange={this.handleChange}
+                name="title"
+                label="Topic Title"
+                variant="outlined"
               />
-              <br />
-              <br />
-              <textarea
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
                 required
-                rows="5"
-                ref={(input) => (this.getBody = input)}
-                cols="28"
-                className="body-edit"
-                maxLength="255"
-                placeholder="Enter Topic"
+                rows={5}
+                multiline={true}
+                value={this.state.body}
+                onChange={this.handleChange}
+                name="body"
+                label="Topic Body"
+                variant="outlined"
               />
-              <br />
-              <br />
+            </Grid>
+            <Grid item xs={12} align="right">
               <Button variant="contained" type="submit">
                 Submit
               </Button>
-            </form>
+            </Grid>
           </Grid>
-        </Grid>
-      </div>
+        </form>
+      </Container>
     );
   }
 }
