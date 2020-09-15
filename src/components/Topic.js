@@ -3,6 +3,13 @@ import { connect } from "react-redux";
 import { Grid, Paper, Button } from "@material-ui/core/";
 import KeyboardArrowUp from "@material-ui/icons/KeyboardArrowUp";
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
+import {
+  upVote,
+  downVote,
+  editTopic,
+  saveTopic,
+  deleteTopic,
+} from "../store/actions/topicActions";
 
 class Topic extends Component {
   checkBody = (e) => {
@@ -81,19 +88,19 @@ class Topic extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     deleteTopic: (id) => {
-      dispatch({ type: "DELETE_TOPIC", id: id });
+      dispatch(deleteTopic(id));
     },
     saveTopic: (id) => {
-      dispatch({ type: "SAVE_TOPIC", id: id });
+      dispatch(saveTopic(id));
     },
     editTopic: (id) => {
-      dispatch({ type: "EDIT_TOPIC", id: id });
+      dispatch(editTopic(id));
     },
     upvote: (id) => {
-      dispatch({ type: "UPVOTE", id: id });
+      dispatch(upVote(id));
     },
     downvote: (id) => {
-      dispatch({ type: "DOWNVOTE", id: id });
+      dispatch(downVote(id));
     },
   };
 };

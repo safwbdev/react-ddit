@@ -8,6 +8,7 @@ import {
   Container,
 } from "@material-ui/core/";
 import moment from "moment";
+import { addTopic } from "../store/actions/topicActions";
 
 class TopicForm extends Component {
   constructor(props) {
@@ -90,7 +91,7 @@ class TopicForm extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     addTopic: (data) => {
-      dispatch({ type: "ADD_TOPIC", data });
+      dispatch(addTopic(data));
     },
   };
 };

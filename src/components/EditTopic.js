@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Grid, Paper, Button } from "@material-ui/core/";
 import Edit from "@material-ui/icons/Edit";
+import { updateTopic } from "../store/actions/topicActions";
 
 class EditTopic extends Component {
   handleEdit = (e) => {
@@ -63,7 +64,7 @@ class EditTopic extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     updateTopic: (id, data) => {
-      dispatch({ type: "UPDATE_TOPIC", id: id, data: data });
+      dispatch(updateTopic(id, data));
     },
   };
 };
