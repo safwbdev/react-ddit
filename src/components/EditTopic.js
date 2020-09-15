@@ -9,14 +9,16 @@ class EditTopic extends Component {
     e.preventDefault();
     const newTitle = this.getTitle.value;
     const newBody = this.getBody.value;
+    const id = this.props.topic.id;
     const data = {
       newTitle,
       newBody,
     };
-    this.props.updateTopic(this.props.topic.id, data);
+    this.props.updateTopic(id, data);
   };
 
   render() {
+    const { topic } = this.props;
     return (
       <Paper>
         <Grid container className="topic">
@@ -31,7 +33,7 @@ class EditTopic extends Component {
                 type="text"
                 className="title-edit"
                 ref={(input) => (this.getTitle = input)}
-                defaultValue={this.props.topic.title}
+                defaultValue={topic.title}
                 placeholder="Enter Topic Title"
               />
               <br />
@@ -42,7 +44,7 @@ class EditTopic extends Component {
                 maxLength="255"
                 rows="5"
                 ref={(input) => (this.getBody = input)}
-                defaultValue={this.props.topic.body}
+                defaultValue={topic.body}
                 cols="28"
                 placeholder="Enter Topic"
               />

@@ -20,10 +20,11 @@ class AllTopics extends Component {
   };
 
   render() {
-    const topicCount = this.props.topics.length;
+    const { topics } = this.props;
+    const topicCount = topics.length;
 
     // sort topics by votes
-    let topicArray = this.props.topics.sort(function (a, b) {
+    let topicArray = topics.sort(function (a, b) {
       return parseFloat(b.votes) - parseFloat(a.votes);
     });
 
@@ -44,11 +45,7 @@ class AllTopics extends Component {
     ));
 
     const pageNumbers = [];
-    for (
-      let i = 1;
-      i <= Math.ceil(this.props.topics.length / topicsPerPage);
-      i++
-    ) {
+    for (let i = 1; i <= Math.ceil(topicCount / topicsPerPage); i++) {
       pageNumbers.push(i);
     }
 
